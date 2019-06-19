@@ -14,3 +14,4 @@
 # ref
 - https://gitee.com/tomsun28/bootshiro
 - https://gitee.com/y_project/RuoYi
+- https://github.com/wuyouzhuguli/FEBS-Shiro
