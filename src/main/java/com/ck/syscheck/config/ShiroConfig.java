@@ -45,11 +45,13 @@ public class ShiroConfig {
         filterMap.put("/api/add", "perms[api:add]");
         //通配符匹配所有
         filterMap.put("/api/*", "authc");
+        // 配置退出过滤器，其中具体的退出代码 Shiro已经替我们实现了
+//        filterMap.put("/api/logout","logout");
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
         //修改调整后的登录页面
         shiroFilterFactoryBean.setLoginUrl("/api/loginPage");
         //修改调整后的未授权页面
         shiroFilterFactoryBean.setUnauthorizedUrl("/api/unAuth");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
         return shiroFilterFactoryBean;
     }
 

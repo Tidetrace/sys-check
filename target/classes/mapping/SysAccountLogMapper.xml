@@ -4,14 +4,14 @@
   <resultMap id="BaseResultMap" type="com.ck.syscheck.model.SysAccountLog">
     <id column="ID" jdbcType="INTEGER" property="id" />
     <result column="LOG_NAME" jdbcType="VARCHAR" property="logName" />
-    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
     <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
     <result column="SUCCEED" jdbcType="TINYINT" property="succeed" />
     <result column="MESSAGE" jdbcType="VARCHAR" property="message" />
     <result column="IP" jdbcType="VARCHAR" property="ip" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, LOG_NAME, USER_ID, CREATE_TIME, SUCCEED, MESSAGE, IP
+    ID, LOG_NAME, USERNAME, CREATE_TIME, SUCCEED, MESSAGE, IP
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -24,10 +24,10 @@
     where ID = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.ck.syscheck.model.SysAccountLog" useGeneratedKeys="true">
-    insert into sys_account_log (LOG_NAME, USER_ID, CREATE_TIME, 
+    insert into sys_account_log (LOG_NAME, USERNAME, CREATE_TIME, 
       SUCCEED, MESSAGE, IP
       )
-    values (#{logName,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+    values (#{logName,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{succeed,jdbcType=TINYINT}, #{message,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}
       )
   </insert>
@@ -37,8 +37,8 @@
       <if test="logName != null">
         LOG_NAME,
       </if>
-      <if test="userId != null">
-        USER_ID,
+      <if test="username != null">
+        USERNAME,
       </if>
       <if test="createTime != null">
         CREATE_TIME,
@@ -57,8 +57,8 @@
       <if test="logName != null">
         #{logName,jdbcType=VARCHAR},
       </if>
-      <if test="userId != null">
-        #{userId,jdbcType=VARCHAR},
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -80,8 +80,8 @@
       <if test="logName != null">
         LOG_NAME = #{logName,jdbcType=VARCHAR},
       </if>
-      <if test="userId != null">
-        USER_ID = #{userId,jdbcType=VARCHAR},
+      <if test="username != null">
+        USERNAME = #{username,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
@@ -101,7 +101,7 @@
   <update id="updateByPrimaryKey" parameterType="com.ck.syscheck.model.SysAccountLog">
     update sys_account_log
     set LOG_NAME = #{logName,jdbcType=VARCHAR},
-      USER_ID = #{userId,jdbcType=VARCHAR},
+      USERNAME = #{username,jdbcType=VARCHAR},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       SUCCEED = #{succeed,jdbcType=TINYINT},
       MESSAGE = #{message,jdbcType=VARCHAR},

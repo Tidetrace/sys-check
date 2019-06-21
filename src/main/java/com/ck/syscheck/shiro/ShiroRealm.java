@@ -16,25 +16,27 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class ShiroRealm extends AuthorizingRealm {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
+    @Resource
     private SysUserService sysUserService;
 
-    @Autowired
+    @Resource
     private SysUserRoleService sysUserRoleService;
 
-    @Autowired
+    @Resource
     private SysRoleResourceService sysRoleResourceService;
 
-    @Autowired
+    @Resource
     private SysResourceService sysResourceService;
-
 
 
     /**
@@ -52,22 +54,23 @@ public class ShiroRealm extends AuthorizingRealm {
         SysUser user = (SysUser) subject.getPrincipal();
         //获取用户角色ID
         SysUserRole byUserId = sysUserRoleService.findByUserId(user.getUid());
-        if (byUserId != null) {
-            //获取用户资源ID
-            List<SysRoleResource> byRoleId = sysRoleResourceService.findByRoleId(byUserId.getRoleId());
-            if (byRoleId != null) {
-                //遍历获取该角色对应的权限
-                for (SysRoleResource resourceId : byRoleId) {
-                    SysResource sysResource = sysResourceService.selectByPrimaryKey(resourceId.getResourceId());
-                    if (sysResource != null) {
-//                        //将请求添加到author里面
-//                        authorizationInfo.addStringPermission(sysResource.getUri());
-                    }
+//        if (byUserId != null) {
+//            //获取用户资源ID
+//            List<SysRoleResource> byRoleId = sysRoleResourceService.findByRoleId(byUserId.getRoleId());
+//            if (byRoleId != null) {
+//                //遍历获取该角色对应的权限
+//                for (SysRoleResource resourceId : byRoleId) {
+//                    logger.error(">>>>>>>>" + resourceId);
+//                    SysResource sysResource = sysResourceService.selectByPrimaryKey(resourceId.getResourceId());
+//                    if (sysResource != null) {
+////                        //将请求添加到author里面
+////                        authorizationInfo.addStringPermission(sysResource.getUri());
+//                    }
+//
+//                }
+//            }
 
-                }
-            }
-
-        }
+//        }
 
         //此处必须要和配置文件里的授权保持一致
         authorizationInfo.addStringPermission("api:add");
@@ -89,13 +92,16 @@ public class ShiroRealm extends AuthorizingRealm {
 
         if (StringUtils.isNotBlank(token.getUsername())) {
             SysUser user = sysUserService.list(token.getUsername());
-            if (user != null) {
-                if (!token.getUsername().equals(user.getUsername())) {
-                    return null;
-                }
-                //返回密码
-                return new SimpleAuthenticationInfo(user, user.getPassword(), "");
+            //检测是否有此用户
+            if (user == null) {
+                //  没有找到账号异常
+                throw new UnknownAccountException();
             }
+            if (!token.getUsername().equals(user.getUsername())) {
+                return null;
+            }
+            //返回密码
+            return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
         }
         return null;
     }

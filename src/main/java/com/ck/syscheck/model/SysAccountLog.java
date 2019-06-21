@@ -24,7 +24,7 @@ public class SysAccountLog {
     /**
      * 用户ID
      */
-    private String userId;
+    private String username;
 
     /**
      * 是否执行成功 0失败 -- 1成功
