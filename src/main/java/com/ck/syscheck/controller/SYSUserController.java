@@ -21,9 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 处理用户登录
@@ -126,27 +124,35 @@ public class SysUserController {
             //登录成功
             subject.login(token);
             SysUser user = (SysUser) subject.getPrincipal();
-            //将权限存到List集合中
-            List<SysResource> list = new ArrayList<SysResource>();
+            //将资源存到List集合中
+            Set<SysResource> set = new LinkedHashSet<>();
+
             //获取用户角色ID
             SysUserRole byUserId = sysUserRoleService.findByUserId(user.getUid());
             if (byUserId != null) {
                 //获取用户资源ID
-                List<SysRoleResource> byRoleId = sysRoleResourceService.findByRoleId(byUserId.getRoleId());
+                Set<SysRoleResource> byRoleId = sysRoleResourceService.findByRoleId(byUserId.getRoleId());
                 if (byRoleId != null) {
-                    //遍历获取该角色对应的权限
                     for (SysRoleResource resourceId : byRoleId) {
-                        logger.error(">>>>>>>>" + resourceId);
+//                        logger.error(">>>>>>>>" + resourceId);
+                        //遍历角色资源表获取该角色对应的资源
                         SysResource sysResource = sysResourceService.selectByPrimaryKey(resourceId.getResourceId());
                         if (sysResource != null) {
-                            list.add(sysResource);
+                            //根据父级ID查询
+                            Set<SysResource> resource = sysResourceService.selectParentById(sysResource.getParentId());
+                            if (resource != null) {
+                                sysResource.setSubmenu(resource);
+                            }
+                            set.add(sysResource);
                         }
 
                     }
                 }
             }
-            logger.error("><><><<><>" + list);
-            modelAndView.addObject("list", list);
+
+
+//            logger.info("><><><<><>" + set);
+            modelAndView.addObject("list", set);
             modelAndView.setViewName("front/index");
             //获取当前用户信息
             //记录日志

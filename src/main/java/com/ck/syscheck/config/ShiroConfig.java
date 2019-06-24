@@ -45,6 +45,7 @@ public class ShiroConfig {
         filterMap.put("/api/add", "perms[api:add]");
         //通配符匹配所有
         filterMap.put("/api/*", "authc");
+        filterMap.put("/config/*","authc");
         // 配置退出过滤器，其中具体的退出代码 Shiro已经替我们实现了
 //        filterMap.put("/api/logout","logout");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);

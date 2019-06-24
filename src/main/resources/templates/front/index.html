@@ -823,21 +823,28 @@
                                 <!--Category name-->
                                 <li class="list-header">OA-SYS</li>
                                 <!--Menu list item-->
-                                <li><a href="index.html"> <i class="fa fa-home"></i> <span
+                                <li><a href=""> <i class="fa fa-home"></i> <span
                                         class="menu-title"> 首页 </span> </a></li>
                                 <!--Menu list item-->
                                 <!-----------------------------------Extra----------------------------------------->
-                                <li>
+                                <li th:each="resource:${list}">
                                     <a href="#">
                                         <i class="fa fa-briefcase"></i>
-                                        <span class="menu-title">用户信息</span>
+                                        <span class="menu-title" th:text="${resource.name}"></span>
                                         <i class="arrow"></i>
                                     </a>
                                     <!--Submenu-->
+                                    <!--<ul class="collapse">-->
+                                        <!--<li th:each="resource:${list}">-->
+                                            <!--<a th:href="${resource.uri}"><i class="fa fa-caret-right"></i> <span-->
+                                                    <!--th:text=" ${resource.name}"></span> </a>-->
+                                        <!--</li>-->
+
+                                    <!--</ul>-->
                                     <ul class="collapse">
-                                        <li th:each="resource:${list}">
-                                            <a th:href="${resource.uri}"><i class="fa fa-caret-right"></i> <span
-                                                    th:text=" ${resource.name}"></span> </a>
+                                        <li th:each="submenu:${resource.submenu}">
+                                            <a th:href="${submenu.uri}"><i class="fa fa-caret-right"></i> <span
+                                                    th:text=" ${submenu.name}"></span> </a>
                                         </li>
 
                                     </ul>
@@ -872,11 +879,11 @@
                                     <ul class="list-group">
                                         <li class="list-header pad-no pad-ver">Server Status</li>
                                         <li class="mar-btm">
-                                            <span class="label label-primary pull-right">15%</span>
+                                            <span class="label label-primary pull-right" id="cpu">0%</span>
                                             <p>CPU Usage</p>
                                             <div class="progress progress-sm">
                                                 <div class="progress-bar progress-bar-primary" style="width: 15%;">
-                                                    <span class="sr-only">15%</span>
+                                                    <span class="sr-only">%</span>
                                                 </div>
                                             </div>
                                         </li>
@@ -1003,6 +1010,24 @@
     $(function () {
         $('#avatar').attr("src", $(".avatar").text());
     })
+</script>
+<!--ajax实时发起请求，获取CPU等信息-->
+<script>
+ window.onload = function(){
+     //定时发送请求
+    setInterval(function() {
+        $.ajax({
+            url: "/config/context",
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                console.log(data);
+                $('#cpu').html(data.cpu+"%")
+                // data = jQuery.parseJSON(data);  //dataType指明了返回数据为json类型，故不需要再反序列化
+            }
+        });
+    }, 5000);
+ }
 </script>
 </body>
 </html>

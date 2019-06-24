@@ -2,8 +2,8 @@ package com.ck.syscheck.service;
 
 import com.ck.syscheck.model.SysRoleResource;
 
-import java.util.List;
+import java.util.Set;
 
 public interface SysRoleResourceService {
-    public List<SysRoleResource> findByRoleId(Integer id);
+    public Set<SysRoleResource> findByRoleId(Integer id);
 }

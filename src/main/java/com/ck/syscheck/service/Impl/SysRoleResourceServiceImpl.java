@@ -6,7 +6,7 @@ import com.ck.syscheck.service.SysRoleResourceService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class SysRoleResourceServiceImpl implements SysRoleResourceService {
@@ -14,7 +14,7 @@ public class SysRoleResourceServiceImpl implements SysRoleResourceService {
     private SysRoleResourceMapper sysRoleResourceMapper;
 
     @Override
-    public List<SysRoleResource> findByRoleId(Integer id) {
+    public Set<SysRoleResource> findByRoleId(Integer id) {
         return sysRoleResourceMapper.findByRoleId(id);
     }
 }

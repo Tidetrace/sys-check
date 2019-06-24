@@ -2,7 +2,7 @@ package com.ck.syscheck.dao;
 
 import com.ck.syscheck.model.SysRoleResource;
 
-import java.util.List;
+import java.util.Set;
 
 public interface SysRoleResourceMapper {
     int deleteByPrimaryKey(Integer id);
@@ -17,5 +17,5 @@ public interface SysRoleResourceMapper {
 
     int updateByPrimaryKey(SysRoleResource record);
 
-    List<SysRoleResource> findByRoleId(Integer id);
+    Set<SysRoleResource> findByRoleId(Integer id);
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * 资源表
@@ -68,5 +69,9 @@ public class SysResource {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
+    /**
+     * 子菜单
+     */
+    private Set<SysResource> submenu;
 
 }
