@@ -2,6 +2,8 @@ package com.ck.syscheck.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 配置控制类
  *
@@ -9,7 +11,9 @@ import lombok.Data;
  * @date 2019/6/24
  */
 @Data
-public class ConfigModel {
+public class ConfigModel implements Serializable{
+
+    private static final long serialVersionUID = 233806585652273322L;
     /**
      * ip
      */

@@ -3,13 +3,16 @@ package com.ck.syscheck.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 /**
  * 用户表
  * Create by ck on 2019/6/17
  */
 @Data
-public class SysUser {
+public class SysUser implements Serializable{
+
+    private static final long serialVersionUID = -7778205814765668765L;
     /**
      * 主键ID
      */

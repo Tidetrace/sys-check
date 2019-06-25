@@ -1,17 +1,17 @@
 package com.ck.syscheck.dao;
 
-import com.ck.syscheck.model.sysOperationLog;
+import com.ck.syscheck.model.SysOperationLog;
 
-public interface sysOperationLogMapper {
+public interface SysOperationLogMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(sysOperationLog record);
+    int insert(SysOperationLog record);
 
-    int insertSelective(sysOperationLog record);
+    int insertSelective(SysOperationLog record);
 
-    sysOperationLog selectByPrimaryKey(Integer id);
+    SysOperationLog selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(sysOperationLog record);
+    int updateByPrimaryKeySelective(SysOperationLog record);
 
-    int updateByPrimaryKey(sysOperationLog record);
+    int updateByPrimaryKey(SysOperationLog record);
 }

@@ -1,5 +1,6 @@
 package com.ck.syscheck.controller;
 
+import com.ck.syscheck.annotate.Log;
 import com.ck.syscheck.model.*;
 import com.ck.syscheck.service.*;
 import com.ck.syscheck.utils.IPUtil;
@@ -53,28 +54,27 @@ public class SysUserController {
     /**
      * @return 测试
      */
+    @Log("测试test")
     @RequestMapping("/test")
     public ModelAndView test(ModelAndView modelAndView) {
 
         modelAndView.setViewName("/front/test");
         return modelAndView;
     }
-
+    @Log("添加add")
     @RequestMapping("/add")
     public ModelAndView add(ModelAndView modelAndView) {
-
         modelAndView.setViewName("/front/add");
         return modelAndView;
     }
-
+    @Log("更新Update")
     @RequestMapping("/update")
     public ModelAndView update(ModelAndView modelAndView) {
-
         modelAndView.setViewName("/front/update");
         return modelAndView;
     }
 
-
+    @Log("跳转到登录页面")
     @ApiOperation(value = "跳转到登录页面", notes = "跳转到登录页面！")
     @RequestMapping("/loginPage")
     public ModelAndView skipLogin() {
@@ -83,6 +83,7 @@ public class SysUserController {
         return modelAndView;
     }
 
+    @Log("跳转到注册页面")
     @ApiOperation(value = "跳转到注册页面", notes = "跳转到注册页面！")
     @RequestMapping("/registerPage")
     public ModelAndView skipRegister() {
@@ -91,6 +92,7 @@ public class SysUserController {
         return modelAndView;
     }
 
+    @Log("跳转到未授权页面")
     @ApiOperation(value = "跳转到未授权页面", notes = "跳转到未授权页面！")
     @RequestMapping("/unAuth")
     public ModelAndView skipUnAuth() {
@@ -99,6 +101,7 @@ public class SysUserController {
         return modelAndView;
     }
 
+    @Log("用户登录认证")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ApiOperation(value = "用户登录认证", httpMethod = "POST", notes = "用户输入账密进行登录认证！")
     @ApiImplicitParams({
@@ -150,8 +153,6 @@ public class SysUserController {
                 }
             }
 
-
-//            logger.info("><><><<><>" + set);
             modelAndView.addObject("list", set);
             modelAndView.setViewName("front/index");
             //获取当前用户信息

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ck.syscheck.dao.sysOperationLogMapper">
-  <resultMap id="BaseResultMap" type="com.ck.syscheck.model.sysOperationLog">
+<mapper namespace="com.ck.syscheck.dao.SysOperationLogMapper">
+  <resultMap id="BaseResultMap" type="com.ck.syscheck.model.SysOperationLog">
     <id column="ID" jdbcType="INTEGER" property="id" />
     <result column="LOG_NAME" jdbcType="VARCHAR" property="logName" />
     <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
@@ -24,7 +24,7 @@
     delete from sys_operation_log
     where ID = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.ck.syscheck.model.sysOperationLog" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.ck.syscheck.model.SysOperationLog" useGeneratedKeys="true">
     insert into sys_operation_log (LOG_NAME, USER_ID, API, 
       METHOD, CREATE_TIME, SUCCEED, 
       MESSAGE)
@@ -32,7 +32,7 @@
       #{method,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{succeed,jdbcType=TINYINT}, 
       #{message,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.ck.syscheck.model.sysOperationLog" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.ck.syscheck.model.SysOperationLog" useGeneratedKeys="true">
     insert into sys_operation_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="logName != null">
@@ -81,7 +81,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ck.syscheck.model.sysOperationLog">
+  <update id="updateByPrimaryKeySelective" parameterType="com.ck.syscheck.model.SysOperationLog">
     update sys_operation_log
     <set>
       <if test="logName != null">
@@ -108,7 +108,7 @@
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ck.syscheck.model.sysOperationLog">
+  <update id="updateByPrimaryKey" parameterType="com.ck.syscheck.model.SysOperationLog">
     update sys_operation_log
     set LOG_NAME = #{logName,jdbcType=VARCHAR},
       USER_ID = #{userId,jdbcType=VARCHAR},

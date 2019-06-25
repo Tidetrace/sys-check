@@ -1012,22 +1012,22 @@
     })
 </script>
 <!--ajax实时发起请求，获取CPU等信息-->
-<script>
- window.onload = function(){
-     //定时发送请求
-    setInterval(function() {
-        $.ajax({
-            url: "/config/context",
-            type: "GET",
-            dataType: "json",
-            success: function(data) {
-                console.log(data);
-                $('#cpu').html(data.cpu+"%")
-                // data = jQuery.parseJSON(data);  //dataType指明了返回数据为json类型，故不需要再反序列化
-            }
-        });
-    }, 5000);
- }
-</script>
+<!--<script>-->
+ <!--window.onload = function(){-->
+     <!--//定时发送请求-->
+    <!--setInterval(function() {-->
+        <!--$.ajax({-->
+            <!--url: "/config/context",-->
+            <!--type: "GET",-->
+            <!--dataType: "json",-->
+            <!--success: function(data) {-->
+                <!--console.log(data);-->
+                <!--$('#cpu').html(data.cpu+"%")-->
+                <!--// data = jQuery.parseJSON(data);  //dataType指明了返回数据为json类型，故不需要再反序列化-->
+            <!--}-->
+        <!--});-->
+    <!--}, 50000);-->
+ <!--}-->
+<!--</script>-->
 </body>
 </html>

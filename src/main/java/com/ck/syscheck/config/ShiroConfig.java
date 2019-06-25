@@ -41,6 +41,7 @@ public class ShiroConfig {
         //放行某些个请求
         filterMap.put("/api/test", "anon");
         filterMap.put("/api/login", "anon");
+        filterMap.put("/metrics", "anon");
         //授权过滤器，如果未授权会跳转到相应的页面
         filterMap.put("/api/add", "perms[api:add]");
         //通配符匹配所有

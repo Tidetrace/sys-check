@@ -3,6 +3,7 @@ package com.ck.syscheck.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,9 @@ import java.util.Date;
  * Create by ck on 2019/6/17
  */
 @Data
-public class SysRole {
+public class SysRole implements Serializable{
+
+    private static final long serialVersionUID = 7022547654945088949L;
     /**
      * 主键Id
      */

@@ -29,15 +29,17 @@ public class ConfigController {
     @ApiOperation(value = "获取CPU相关信息", notes = "实时获取CPU相关信息！")
     @RequestMapping("/context")
     public ConfigModel skipRegister(HttpServletRequest request) {
-        logger.info("--------------获取当qian设备信息----------------------");
-        String ipAddr = IPUtil.getIpAddr(request);
-        logger.error(""+CPUMonitorCalc.getInstance().getProcessCpu());
-        Double processCpu = CPUMonitorCalc.getInstance().getProcessCpu();
-        String cpu =new DecimalFormat("#.00").format(processCpu*10);
-        ConfigModel configModel = new ConfigModel();
-        configModel.setCpu(cpu);
-        configModel.setIp(ipAddr);
-        logger.info("获取当前设备信息CPU: "+processCpu);
-        return configModel;
+//        logger.info("--------------获取当qian设备信息----------------------");
+//        String ipAddr = IPUtil.getIpAddr(request);
+//        logger.error(""+CPUMonitorCalc.getInstance().getProcessCpu());
+//        Double processCpu = CPUMonitorCalc.getInstance().getProcessCpu();
+//        String cpu =new DecimalFormat("#.00").format(processCpu);
+//        ConfigModel configModel = new ConfigModel();
+//        configModel.setCpu(cpu);
+//        configModel.setIp(ipAddr);
+//        logger.info("获取当前设备信息CPU: "+processCpu);
+//        return configModel;
+        return null;
+
     }
 }

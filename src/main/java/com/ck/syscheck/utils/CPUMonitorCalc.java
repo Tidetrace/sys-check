@@ -1,15 +1,11 @@
 package com.ck.syscheck.utils;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.management.ThreadMXBean;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class CPUMonitorCalc {
 

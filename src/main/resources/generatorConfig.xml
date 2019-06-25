@@ -12,8 +12,9 @@
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/usthe"
-                        userId="root" password="root">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/oa-check?characterEncoding=UTF-8&amp;serverTimezone=UTC"
+                        userId="root" password="123456">
         </jdbcConnection>
         <javaTypeResolver>
             <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
@@ -36,55 +37,63 @@
         <!--生成对应表及类名-->
 
         <!--<table tableName="sys_resource" domainObjectName="SysResource" enableCountByExample="false"-->
-               <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false">-->
-            <!--<property name="my.isgen.usekeys" value="true"/>-->
-            <!--<property name="useActualColumnNames" value="false"/>-->
-            <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
+        <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
+        <!--<property name="my.isgen.usekeys" value="true"/>-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
 
         <!--</table>-->
 
         <!--<table tableName="sys_role" domainObjectName="SysRole" enableCountByExample="false"-->
-               <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false">-->
-            <!--<property name="my.isgen.usekeys" value="true"/>-->
-            <!--<property name="useActualColumnNames" value="false"/>-->
-            <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
+        <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
+        <!--<property name="my.isgen.usekeys" value="true"/>-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
         <!--</table>-->
 
         <!--<table tableName="sys_role_resource" domainObjectName="SysRoleResource" enableCountByExample="false"-->
-               <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false">-->
-            <!--<property name="my.isgen.usekeys" value="true"/>-->
-            <!--<property name="useActualColumnNames" value="false"/>-->
-            <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
+        <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
+        <!--<property name="my.isgen.usekeys" value="true"/>-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
         <!--</table>-->
 
         <!--<table tableName="sys_user" domainObjectName="SysUser" enableCountByExample="false"-->
-               <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false">-->
-            <!--<property name="my.isgen.usekeys" value="true"/>-->
-            <!--<property name="useActualColumnNames" value="false"/>-->
-            <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
+        <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
+        <!--<property name="my.isgen.usekeys" value="true"/>-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
         <!--</table>-->
 
         <!--<table tableName="sys_user_role" domainObjectName="SysUserRole" enableCountByExample="false"-->
-               <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false">-->
-            <!--<property name="my.isgen.usekeys" value="true"/>-->
-            <!--<property name="useActualColumnNames" value="false"/>-->
-            <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
+        <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
+        <!--<property name="my.isgen.usekeys" value="true"/>-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
         <!--</table>-->
 
-        <table tableName="sys_account_log" domainObjectName="SysAccountLog" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <property name="my.isgen.usekeys" value="true"/>
-            <property name="useActualColumnNames" value="false"/>
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
+        <!--<table tableName="sys_account_log" domainObjectName="SysAccountLog" enableCountByExample="false"-->
+        <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
+        <!--<property name="my.isgen.usekeys" value="true"/>-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
+        <!--</table>-->
 
-        <table tableName="sys_operation_log" domainObjectName="sysOperationLog" enableCountByExample="false"
+        <!--<table tableName="sys_operation_log" domainObjectName="sysOperationLog" enableCountByExample="false"-->
+        <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
+        <!--<property name="my.isgen.usekeys" value="true"/>-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
+        <!--</table>-->
+
+        <table tableName="sys_log" domainObjectName="SysLog" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <property name="my.isgen.usekeys" value="true"/>
