@@ -60,13 +60,13 @@ public class LogAspect {
         // 请求的方法参数名称
         LocalVariableTableParameterNameDiscoverer u = new LocalVariableTableParameterNameDiscoverer();
         String[] paramNames = u.getParameterNames(method);
-        if (args != null && paramNames != null) {
-            String params = "";
-            for (int i = 0; i < args.length; i++) {
-                params += "  " + paramNames[i] + ": " + args[i];
-            }
-            sysOperationLog.setMessage(params);
-        }
+//        if (args != null && paramNames != null) {
+//            String params = "";
+//            for (int i = 0; i < args.length; i++) {
+//                params += "  " + paramNames[i] + ": " + args[i];
+//            }
+//            sysOperationLog.setMessage(params);
+//        }
         // 模拟一个用户名
         sysOperationLog.setUserId("admin");
         sysOperationLog.setCreateTime(new Date());

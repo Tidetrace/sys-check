@@ -61,12 +61,14 @@ public class SysUserController {
         modelAndView.setViewName("/front/test");
         return modelAndView;
     }
+
     @Log("添加add")
     @RequestMapping("/add")
     public ModelAndView add(ModelAndView modelAndView) {
         modelAndView.setViewName("/front/add");
         return modelAndView;
     }
+
     @Log("更新Update")
     @RequestMapping("/update")
     public ModelAndView update(ModelAndView modelAndView) {
@@ -101,24 +103,23 @@ public class SysUserController {
         return modelAndView;
     }
 
-    @Log("用户登录认证")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ApiOperation(value = "用户登录认证", httpMethod = "POST", notes = "用户输入账密进行登录认证！")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", required = true, value = "用户名"),
-            @ApiImplicitParam(name = "username", required = true, value = "密码")
+            @ApiImplicitParam(name = "password", required = true, value = "密码")
 
     })
     @RequiresPermissions(value = "/api/login")
-    public ModelAndView login(@RequestParam(name = "username", required = true, defaultValue = "") String username,
-                              @RequestParam(name = "password", required = true, defaultValue = "") String password,
-                              HttpServletRequest request,
-                              Model model) {
-        ModelAndView modelAndView = new ModelAndView();
+    public ResultMsg login(@RequestParam(name = "username", required = true, defaultValue = "") String username,
+                           @RequestParam(name = "password", required = true, defaultValue = "") String password,
+                           Boolean rememberMe, HttpServletRequest request, Model model) {
+        ResultMsg res = new ResultMsg();
         //1、获取Subject
         Subject subject = SecurityUtils.getSubject();
         //2、封装用户数据
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        logger.error("&&&&&&&&&&&&&&&"+rememberMe);
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
         //获取用户登录IP
         String ip = IPUtil.getIpAddr(request);
         logger.info("ip地址为：" + ip);
@@ -126,54 +127,25 @@ public class SysUserController {
         try {
             //登录成功
             subject.login(token);
-            SysUser user = (SysUser) subject.getPrincipal();
-            //将资源存到List集合中
-            Set<SysResource> set = new LinkedHashSet<>();
-
-            //获取用户角色ID
-            SysUserRole byUserId = sysUserRoleService.findByUserId(user.getUid());
-            if (byUserId != null) {
-                //获取用户资源ID
-                Set<SysRoleResource> byRoleId = sysRoleResourceService.findByRoleId(byUserId.getRoleId());
-                if (byRoleId != null) {
-                    for (SysRoleResource resourceId : byRoleId) {
-//                        logger.error(">>>>>>>>" + resourceId);
-                        //遍历角色资源表获取该角色对应的资源
-                        SysResource sysResource = sysResourceService.selectByPrimaryKey(resourceId.getResourceId());
-                        if (sysResource != null) {
-                            //根据父级ID查询
-                            Set<SysResource> resource = sysResourceService.selectParentById(sysResource.getParentId());
-                            if (resource != null) {
-                                sysResource.setSubmenu(resource);
-                            }
-                            set.add(sysResource);
-                        }
-
-                    }
-                }
-            }
-
-            modelAndView.addObject("list", set);
-            modelAndView.setViewName("front/index");
-            //获取当前用户信息
             //记录日志
             sysAccountLogService.insert(getAccountLogInfo(username, ip, "用户登录成功！", (byte) 1));
-            return modelAndView;
+            res.setFlag(true);
+            res.setMsg("success");
         } catch (UnknownAccountException e) {
-            logger.error("登录失败" + "用户名不存在");
             model.addAttribute("msg", "用户名不存在！");
-            modelAndView.setViewName("front/pages-login");
             //记录日志
             sysAccountLogService.insert(getAccountLogInfo(username, ip, "用户名不存在，登录失败！", (byte) 0));
+            res.setFlag(false);
+            res.setMsg("用户名不存在");
         } catch (IncorrectCredentialsException e) {
-            logger.error("登录失败" + "密码错误");
-            model.addAttribute("msg", "密码错误！");
-            modelAndView.setViewName("front/pages-login");
+            model.addAttribute("msg", "密码错误，登录失败！");
             //记录日志
-            getAccountLogInfo(username, ip, "密码错误，登录失败！", (byte) 0);
             sysAccountLogService.insert(getAccountLogInfo(username, ip, "密码错误，登录失败！", (byte) 0));
+            res.setFlag(false);
+            res.setMsg("密码错误，登录失败！");
+
         }
-        return modelAndView;
+        return res;
     }
 
     private SysAccountLog getAccountLogInfo(String username, String ip, String meg, Byte success) {

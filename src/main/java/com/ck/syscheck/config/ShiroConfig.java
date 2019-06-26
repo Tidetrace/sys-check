@@ -2,8 +2,12 @@ package com.ck.syscheck.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.ck.syscheck.shiro.ShiroRealm;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -36,24 +40,34 @@ public class ShiroConfig {
          *      perms:该资源必须得到资源权限才可以访问
          *      role：该资源必须得到角色权限才可以访问
          */
+
+        //登录的url
+        shiroFilterFactoryBean.setLoginUrl("/api/loginPage");
+        // 未授权url
+        shiroFilterFactoryBean.setUnauthorizedUrl("/api/unAuth");
+        // 登录成功后跳转的url
+        shiroFilterFactoryBean.setSuccessUrl("/index");
         //注意此处要使用LinkenHashMap
         Map<String, String> filterMap = new LinkedHashMap<>();
+        filterMap.put("/", "authc");
+        // 定义filterChain，静态资源不拦截
+        filterMap.put("/css/**", "anon");
+        filterMap.put("/js/**", "anon");
+        filterMap.put("/fonts/**", "anon");
+        filterMap.put("/img/**", "anon");
         //放行某些个请求
         filterMap.put("/api/test", "anon");
         filterMap.put("/api/login", "anon");
-        filterMap.put("/metrics", "anon");
         //授权过滤器，如果未授权会跳转到相应的页面
         filterMap.put("/api/add", "perms[api:add]");
-        //通配符匹配所有
-        filterMap.put("/api/*", "authc");
-        filterMap.put("/config/*","authc");
+        // 除上以外所有url都必须认证通过才可以访问，未通过认证自动访问LoginUrl
+//        filterMap.put("/api/*", "authc");
+//        filterMap.put("/home/*","authc");
+//        filterMap.put("/config/*","authc");
+
         // 配置退出过滤器，其中具体的退出代码 Shiro已经替我们实现了
-//        filterMap.put("/api/logout","logout");
+        filterMap.put("/logout", "logout");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
-        //修改调整后的登录页面
-        shiroFilterFactoryBean.setLoginUrl("/api/loginPage");
-        //修改调整后的未授权页面
-        shiroFilterFactoryBean.setUnauthorizedUrl("/api/unAuth");
         return shiroFilterFactoryBean;
     }
 
@@ -67,6 +81,10 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //关联Realm
         securityManager.setRealm(shiroRealm);
+        //记住我
+        securityManager.setRememberMeManager(rememberMeManager());
+        //缓存管理
+        securityManager.setCacheManager(getEhCacheManager());
         return securityManager;
     }
 
@@ -91,4 +109,39 @@ public class ShiroConfig {
         return new ShiroDialect();
     }
 
+
+    /**
+     * cookie对象
+     * @return
+     */
+    public SimpleCookie rememberMeCookie() {
+        // 设置cookie名称，对应login.html页面的<input type="checkbox" name="rememberMe"/>
+        SimpleCookie cookie = new SimpleCookie("rememberMe");
+        // 设置cookie的过期时间，单位为秒，这里为一天
+        cookie.setMaxAge(86400);
+        return cookie;
+    }
+
+    /**
+     * cookie管理对象
+     * @return
+     */
+    public CookieRememberMeManager rememberMeManager() {
+        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+        cookieRememberMeManager.setCookie(rememberMeCookie());
+        // rememberMe cookie加密的密钥
+        cookieRememberMeManager.setCipherKey(Base64.decode("4AvVhmFLUs0KTA3Kprsdag=="));
+        return cookieRememberMeManager;
+    }
+
+    /**
+     * 注入Ehcache缓存
+     * @return
+     */
+    @Bean
+    public EhCacheManager getEhCacheManager() {
+        EhCacheManager ehCacheManager = new EhCacheManager();
+        ehCacheManager.setCacheManagerConfigFile("classpath:config/ehcache-shiro.xml");
+        return ehCacheManager;
+    }
 }

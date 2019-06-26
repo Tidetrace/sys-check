@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -66,10 +66,11 @@
                             </div>
                             <div class="pull-left pad-btm">
                                 <div class="checkbox">
-                                    <font color="red" class="font" th:text="${msg}"/>
+                                    <!--<font color="red" class="font" th:text="${msg}"/>-->
+                                    <p><input type="checkbox" name="rememberMe" class="pull-right pad-btm"/>记住我</p>
                                 </div>
                             </div>
-                            <button type="submit" id="btn" class="btn btn btn-primary pull-right">
+                            <button type="button" th:onclick="login()" id="btn" class="btn btn btn-primary pull-right">
                                 Log In
                             </button>
                         </form>
@@ -125,5 +126,29 @@
             }
         })
     });
+</script>
+
+<script th:inline="javascript">
+    function login() {
+        console.log("sjhj")
+        var username = $("input[name='username']").val();
+        var password = $("input[name='password']").val();
+        var rememberMe = $("input[name='rememberMe']").is(':checked');
+        $.ajax({
+            type: "post",
+            url: "/api/login",
+            data: {"username": username, "password": password, "rememberMe": rememberMe},
+            dataType: "json",
+            success: function (res) {
+                console.log("成功")
+                console.log(res.flag)
+                if (res.flag) {
+                    window.location.href = '/home/index';
+                } else {
+                    alert(res.msg);
+                }
+            }
+        });
+    }
 </script>
 </html>

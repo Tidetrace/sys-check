@@ -32,12 +32,6 @@ public class ShiroRealm extends AuthorizingRealm {
     @Resource
     private SysUserRoleService sysUserRoleService;
 
-    @Resource
-    private SysRoleResourceService sysRoleResourceService;
-
-    @Resource
-    private SysResourceService sysResourceService;
-
 
     /**
      * 处理授权逻辑
@@ -54,24 +48,6 @@ public class ShiroRealm extends AuthorizingRealm {
         SysUser user = (SysUser) subject.getPrincipal();
         //获取用户角色ID
         SysUserRole byUserId = sysUserRoleService.findByUserId(user.getUid());
-//        if (byUserId != null) {
-//            //获取用户资源ID
-//            List<SysRoleResource> byRoleId = sysRoleResourceService.findByRoleId(byUserId.getRoleId());
-//            if (byRoleId != null) {
-//                //遍历获取该角色对应的权限
-//                for (SysRoleResource resourceId : byRoleId) {
-//                    logger.error(">>>>>>>>" + resourceId);
-//                    SysResource sysResource = sysResourceService.selectByPrimaryKey(resourceId.getResourceId());
-//                    if (sysResource != null) {
-////                        //将请求添加到author里面
-////                        authorizationInfo.addStringPermission(sysResource.getUri());
-//                    }
-//
-//                }
-//            }
-
-//        }
-
         //此处必须要和配置文件里的授权保持一致
         authorizationInfo.addStringPermission("api:add");
         return authorizationInfo;
@@ -86,19 +62,25 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        logger.info("执行认证逻辑+" + authenticationToken.toString());
-        //模拟数据库操作
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-
-        if (StringUtils.isNotBlank(token.getUsername())) {
-            SysUser user = sysUserService.list(token.getUsername());
+        // 获取用户输入的用户名和密码
+        String userName = (String) token.getPrincipal();
+        String password = new String((char[]) token.getCredentials());
+        if (StringUtils.isNotBlank(userName)) {
+            SysUser user = sysUserService.list(userName);
             //检测是否有此用户
             if (user == null) {
                 //  没有找到账号异常
-                throw new UnknownAccountException();
+                throw new UnknownAccountException("用户名或密码错误！");
             }
             if (!token.getUsername().equals(user.getUsername())) {
                 return null;
+            }
+            if (!password.equals(user.getPassword())) {
+                throw new IncorrectCredentialsException("用户名或密码错误！");
+            }
+            if (user.getStatus().equals("0")) {
+                throw new LockedAccountException("账号已被锁定,请联系管理员！");
             }
             //返回密码
             return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
