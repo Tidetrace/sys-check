@@ -6,6 +6,7 @@ import com.ck.syscheck.service.SysOperationService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class SysOperationServiceImpl implements SysOperationService {
@@ -15,5 +16,10 @@ public class SysOperationServiceImpl implements SysOperationService {
     @Override
     public int insert(SysOperationLog record) {
         return sysOperationLogMapper.insert(record);
+    }
+
+    @Override
+    public List<SysOperationLog> selectAll() {
+        return sysOperationLogMapper.selectAll();
     }
 }

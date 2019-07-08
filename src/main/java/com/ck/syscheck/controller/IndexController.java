@@ -1,25 +1,27 @@
 package com.ck.syscheck.controller;
 
 import com.ck.syscheck.annotate.Log;
-import com.ck.syscheck.model.SysResource;
-import com.ck.syscheck.model.SysRoleResource;
-import com.ck.syscheck.model.SysUser;
-import com.ck.syscheck.model.SysUserRole;
+import com.ck.syscheck.model.*;
 import com.ck.syscheck.service.*;
-import com.ck.syscheck.utils.IPUtil;
+import com.ck.syscheck.utils.ResultInfoUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,6 +37,8 @@ public class IndexController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private final Integer PAGESIZE = 10;
+
     @Resource
     private SysUserRoleService sysUserRoleService;
 
@@ -44,6 +48,8 @@ public class IndexController {
     @Resource
     private SysResourceService sysResourceService;
 
+    @Resource
+    private SysOperationService sysOperationService;
 
     @Log("跳转到主页--index")
     @GetMapping("/index")
@@ -82,5 +88,26 @@ public class IndexController {
         modelAndView.addObject("list", set);
         modelAndView.setViewName("/front/index");
         return modelAndView;
+    }
+
+//    @Log("在主页展示用户登录日志")
+//    @GetMapping("/list")
+//    @ApiOperation(value = "将日志信息在首页展示")
+//    public PageInfo<SysOperationLog> list(@RequestParam(name = "pageNum", required = true, defaultValue = "1") Integer pageNum, Model model) {
+//        PageHelper.startPage(pageNum, PAGESIZE);
+//        List<SysOperationLog> logList = sysOperationService.selectAll();
+//        PageInfo<SysOperationLog> pageInfo = new PageInfo<>(logList);
+//        model.addAttribute("logList", logList);
+//        model.addAttribute("page", pageInfo);
+//        return pageInfo;
+//    }
+
+    @Log("在主页展示用户登录日志")
+    @GetMapping("/list")
+    @ApiOperation(value = "将日志信息在首页展示")
+    public ResultInfo<List<SysOperationLog>> list(@RequestParam(name = "pageNum", required = true, defaultValue = "1") Integer pageNum, Model model) {
+        logger.error("当前页为{}", pageNum);
+        List<SysOperationLog> logList = sysOperationService.selectAll();
+        return ResultInfoUtil.success(logList);
     }
 }
