@@ -13,6 +13,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,14 +77,15 @@ public class ShiroRealm extends AuthorizingRealm {
             if (!token.getUsername().equals(user.getUsername())) {
                 return null;
             }
-            if (!password.equals(user.getPassword())) {
-                throw new IncorrectCredentialsException("用户名或密码错误！");
-            }
             if (user.getStatus().equals("0")) {
                 throw new LockedAccountException("账号已被锁定,请联系管理员！");
             }
+            // 获取盐值，即用户名
+            ByteSource salt = ByteSource.Util.bytes("AaBbCc");
+            // 将账户名，密码，盐值，realmName实例化到SimpleAuthenticationInfo中交给Shiro来管理
+            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), salt, getName());
             //返回密码
-            return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
+            return simpleAuthenticationInfo;
         }
         return null;
     }

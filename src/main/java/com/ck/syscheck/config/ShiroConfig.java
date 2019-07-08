@@ -2,6 +2,7 @@ package com.ck.syscheck.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.ck.syscheck.shiro.ShiroRealm;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -10,6 +11,7 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -73,14 +75,14 @@ public class ShiroConfig {
 
     /***
      * 创建DefaultWebSecurityManager
-     * @param shiroRealm
+     * @param matcher
      * @return
      */
     @Bean
-    public DefaultWebSecurityManager getDefaultWebSecurityManager(ShiroRealm shiroRealm) {
+    public DefaultWebSecurityManager getDefaultWebSecurityManager(@Qualifier("hashedCredentialsMatcher") HashedCredentialsMatcher matcher) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //关联Realm
-        securityManager.setRealm(shiroRealm);
+        securityManager.setRealm(shiroRealm(matcher));
         //记住我
         securityManager.setRememberMeManager(rememberMeManager());
         //缓存管理
@@ -95,8 +97,10 @@ public class ShiroConfig {
      * @return
      */
     @Bean
-    public ShiroRealm shiroRealm() {
-        return new ShiroRealm();
+    public ShiroRealm shiroRealm(HashedCredentialsMatcher matcher) {
+        ShiroRealm myShiroRealm = new ShiroRealm();
+        myShiroRealm.setCredentialsMatcher(matcher);
+        return myShiroRealm;
     }
 
 
@@ -107,6 +111,21 @@ public class ShiroConfig {
     @Bean
     public ShiroDialect getShiroDialect(){
         return new ShiroDialect();
+    }
+
+    /**
+     * 密码匹配凭证管理器
+     *
+     * @return
+     */
+    @Bean(name = "hashedCredentialsMatcher")
+    public HashedCredentialsMatcher hashedCredentialsMatcher() {
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        // 采用MD5方式加密
+        hashedCredentialsMatcher.setHashAlgorithmName("MD5");
+        // 设置加密次数
+        hashedCredentialsMatcher.setHashIterations(1024);
+        return hashedCredentialsMatcher;
     }
 
 
