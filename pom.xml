@@ -141,7 +141,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.2.58</version>
+			<version>1.2.83</version>
 		</dependency>
 		<!--利用SpringBoot项目查看系统属性(系统名称、系统内存、线程等)-->
 		<dependency>
